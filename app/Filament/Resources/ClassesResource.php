@@ -32,7 +32,9 @@ class ClassesResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('sections.name')->badge(),
+                Tables\Columns\TextColumn::make('students_count')->counts('students')
             ])
             ->filters([
                 //
