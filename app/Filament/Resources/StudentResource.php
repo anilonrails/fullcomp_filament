@@ -50,7 +50,26 @@ class StudentResource extends Resource
                 Tables\Columns\TextColumn::make('section.name')->searchable()->sortable()->badge()
             ])
             ->filters([
-                //
+                Tables\Filters\Filter::make("class-section-filter")
+                    ->form([
+                        Forms\Components\Select::make('class_id')
+                            ->relationship('class', 'name')->label('Filter by class'),
+                        Forms\Components\Select::make('section_id')
+                            ->options(function (Forms\Get $get) {
+                                $class_id = $get('class_id');
+                                if ($class_id) {
+                                    return Section::where('class_id', $class_id)->pluck('name', 'id')->toArray();
+                                }
+                            })
+                    ])->query(function (Builder $query, array $data) {
+                        return $query
+                            ->when($data['class_id'], function ($query) use ($data) {
+                                return $query->where('class_id', $data['class_id']);
+                            })
+                            ->when($data['section_id'], function (Builder $query) use ($data){
+                                return $query->where('section_id',$data['section_id']);
+                            });
+                    })
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

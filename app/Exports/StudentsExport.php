@@ -4,9 +4,9 @@ namespace App\Exports;
 
 use Illuminate\Database\Eloquent\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\FromCollection;
 
-class StudentsExport implements FromQuery
+class StudentsExport implements FromCollection
 {
     use Exportable;
 
@@ -17,8 +17,8 @@ class StudentsExport implements FromQuery
         $this->records = $records;
     }
 
-    public function query()
+    public function collection(): Collection
     {
-        dd($this->records);
+        return $this->records;
     }
 }
