@@ -82,7 +82,8 @@ class StudentResource extends Resource
             ->actions([
 
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('downloadPDF')->url(fn(Student $student)=> route('generate-pdf', compact('student')))->label("Download Pdf")->openUrlInNewTab()
+                Tables\Actions\Action::make('downloadPDF')->url(fn(Student $student)=> route('generate-pdf', compact('student')))->label("Download Pdf")->openUrlInNewTab(),
+                Tables\Actions\Action::make('generateQRCode')->url(fn(Student $student)=> static::getUrl('generateQRCode', ['record'=>$student]))->label("Generate QR")->openUrlInNewTab()
 
             ])
             ->bulkActions([
@@ -111,6 +112,7 @@ class StudentResource extends Resource
             'index' => Pages\ListStudents::route('/'),
             'create' => Pages\CreateStudent::route('/create'),
             'edit' => Pages\EditStudent::route('/{record}/edit'),
+            'generateQRCode'=>Pages\GenerateQRCode::route('{record}/qrcode')
         ];
     }
 }
