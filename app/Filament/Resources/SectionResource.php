@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Validation\Rules\Unique;
 
 class SectionResource extends Resource
 {
@@ -20,13 +21,14 @@ class SectionResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
 
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name'),
-                Forms\Components\Select::make('class_id')->relationship('classes','name')
+                Forms\Components\TextInput::make('name')->unique(ignoreRecord: true, modifyRuleUsing: function (Forms\Get $get, Unique $rule) {
+                    return $rule->where('class_id', $get('class_id'));
+                })->required(),
+                Forms\Components\Select::make('class_id')->relationship('classes', 'name')
             ]);
     }
 
