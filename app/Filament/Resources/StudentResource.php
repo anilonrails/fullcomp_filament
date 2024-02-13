@@ -8,6 +8,7 @@ use App\Filament\Resources\StudentResource\RelationManagers;
 use App\Models\Classes;
 use App\Models\Section;
 use App\Models\Student;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -79,7 +80,10 @@ class StudentResource extends Resource
                     })
             ])
             ->actions([
+
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('downloadPDF')->url(fn(Student $student)=> route('generate-pdf', compact('student')))->label("Download Pdf")->openUrlInNewTab()
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
