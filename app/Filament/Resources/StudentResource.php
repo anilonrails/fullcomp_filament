@@ -27,7 +27,7 @@ class StudentResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return "60";
+        return static::$model::count();
     }
 
     public static function form(Form $form): Form
