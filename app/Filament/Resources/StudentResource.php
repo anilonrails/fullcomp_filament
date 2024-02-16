@@ -37,6 +37,8 @@ class StudentResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')->autofocus(),
                 Forms\Components\TextInput::make('email')->email()->unique(),
+                Forms\Components\TextInput::make('password')->password()->confirmed()->required()->visibleOn('create'),
+                Forms\Components\TextInput::make('password_confirmation')->password()->required()->visibleOn('create'),
                 Forms\Components\Select::make('class_id')->relationship('class', 'name')->live(),
                 Forms\Components\Select::make('section_id')->relationship('section', 'name')->options(function (Forms\Get $get) {
                     $class_id = $get('class_id');
